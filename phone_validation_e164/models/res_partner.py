@@ -37,6 +37,12 @@ class ResPartner(models.Model):
     # --- 1. FIX Odoo Core Behavior ---
     # Override the @onchange methods to use E164 instead of INTERNATIONAL
 
+    # Davysoft: this database has no standard "mobile" field on res.partner
+    # (removed from Odoo core in a recent version) -- a custom Studio field
+    # "x_mobile" is used instead. Target that field name here rather than
+    # the upstream module's "mobile", which does not exist in this install.
+    MOBILE_FIELD = "x_mobile"
+
     def _format_onchange_number(self, field_name):
         number = getattr(self, field_name)
         country = self.country_id if self.country_id else None
@@ -54,9 +60,9 @@ class ResPartner(models.Model):
     def _onchange_phone_validation(self):
         self._format_onchange_number("phone")
 
-    @api.onchange("mobile", "country_id", "company_id")
+    @api.onchange("x_mobile", "country_id", "company_id")
     def _onchange_mobile_validation(self):
-        self._format_onchange_number("mobile")
+        self._format_onchange_number(self.MOBILE_FIELD)
 
     # --- 2. ADD Save Logic (for Website/API) ---
     # Catches all save actions that bypass @onchange
@@ -75,15 +81,15 @@ class ResPartner(models.Model):
             country = self._get_country_for_phone_format(vals)
             if vals.get("phone"):
                 vals["phone"] = _format_number_to_e164(vals["phone"], country)
-            if vals.get("mobile"):
-                vals["mobile"] = _format_number_to_e164(vals["mobile"], country)
+            if vals.get(self.MOBILE_FIELD):
+                vals[self.MOBILE_FIELD] = _format_number_to_e164(vals[self.MOBILE_FIELD], country)
         return super().create(vals_list)
 
     def write(self, vals):
-        if "phone" in vals or "mobile" in vals:
+        if "phone" in vals or self.MOBILE_FIELD in vals:
             country = self._get_country_for_phone_format(vals)
             if vals.get("phone"):
                 vals["phone"] = _format_number_to_e164(vals["phone"], country)
-            if vals.get("mobile"):
-                vals["mobile"] = _format_number_to_e164(vals["mobile"], country)
+            if vals.get(self.MOBILE_FIELD):
+                vals[self.MOBILE_FIELD] = _format_number_to_e164(vals[self.MOBILE_FIELD], country)
         return super().write(vals)
