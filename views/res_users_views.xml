@@ -7,8 +7,8 @@
         <field name="inherit_id" ref="base.view_users_form" />
         <field name="arch" type="xml">
             <!-- Odoo 19: auth_oauth no longer ships its own view (no oauth_provider_id
-                 anchor available anymore) -- inherit the core user form and anchor on
-                 the always-present "login" field instead. -->
+                 anchor available anymore), so inherit the core user form instead and
+                 anchor on the always-present "login" field. -->
             <field name="login" position="after">
                 <field name="disable_password_login" />
             </field>
