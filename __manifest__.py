@@ -1,6 +1,6 @@
 {
     "name": "OAuth Disable Password Login",
-    "version": "18.0.1.0.0",
+    "version": "19.0.1.0.0",
     "category": "Hidden",
     "author": "initOS GmbH, Nitrokey GmbH",
     "website": "https://www.initos.com",
