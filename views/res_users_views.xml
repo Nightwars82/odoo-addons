@@ -7,11 +7,20 @@
         <field name="inherit_id" ref="base.view_users_form" />
         <field name="arch" type="xml">
             <!-- Odoo 19: auth_oauth no longer ships its own view (no oauth_provider_id
-                 anchor available anymore), so inherit the core user form instead and
-                 anchor on the always-present "login" field. -->
-            <field name="login" position="after">
-                <field name="disable_password_login" />
-            </field>
+                 anchor available anymore), so inherit the core user form instead.
+                 Anchored on the "Security" tab's auth div rather than the "login"
+                 field: the hr module hides the whole login/email header block for
+                 users linked to an employee record (replacing it with its own
+                 duplicate), which would silently hide a field placed there. -->
+            <xpath expr="//div[@name='auth']" position="after">
+                <div class="d-flex mt-3">
+                    <div class="col-7 col-sm-6 col-lg-3 d-flex flex-column">
+                        <span class="o_form_label">Password Login Disabled</span>
+                        <span class="text-muted">Automatically set when this user has an OAuth login.</span>
+                    </div>
+                    <field name="disable_password_login" class="my-auto" />
+                </div>
+            </xpath>
         </field>
     </record>
 </odoo>
