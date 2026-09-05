@@ -6,7 +6,7 @@
     "overriding Odoo core behavior. Supports website/API saves.",
     "category": "Phone",
     "license": "AGPL-3",
-    "version": "18.0.1.0.0",
+    "version": "19.0.1.0.0",
     "external_dependencies": {"python": ["phonenumbers"]},
     "depends": ["phone_validation"],
     "author": "Nitrokey GmbH",
